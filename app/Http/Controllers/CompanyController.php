@@ -24,11 +24,11 @@ class CompanyController extends Controller
         return view('companies.create');
     }
  
-    public function store(StoreCompanyRequest $request): RedirectResponse
+    public function store(StoreCompanyRequest $request)
     {
         Company::create($request->validated());
  
-        return to_route('companies.index');
+        return redirect()->route('companies.index');
     }
  
     public function edit(Company $company)
@@ -36,17 +36,17 @@ class CompanyController extends Controller
         return view('companies.edit', compact('company'));
     }
  
-    public function update(UpdateCompanyRequest $request, Company $company): RedirectResponse
+    public function update(UpdateCompanyRequest $request, Company $company)
     {
         $company->update($request->validated());
  
-        return to_route('companies.index');
+        return redirect()->route('companies.index');
     }
 
     public function destroy(Company $company)
     {
         $company->delete();
  
-        return to_route('companies.index');
+        return redirect()->route('companies.index');
     }
 }

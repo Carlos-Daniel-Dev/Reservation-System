@@ -11,6 +11,24 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed();
+    }
+
+    public function testSeeder()
+    {
+        $this->artisan('db:seed');
+
+        $this->assertDatabaseHas('roles', [
+            'name' => 'customer'
+        ]);
+
+        \DB::statement('ALTER TABLE roles AUTO_INCREMENT = 1');
+    }
+
     public function test_login_screen_can_be_rendered(): void
     {
         $response = $this->get('/login');
@@ -26,7 +44,7 @@ class AuthenticationTest extends TestCase
             'email' => $user->email,
             'password' => 'password',
         ]);
-
+        
         $this->assertAuthenticated();
         $response->assertRedirect(RouteServiceProvider::HOME);
     }

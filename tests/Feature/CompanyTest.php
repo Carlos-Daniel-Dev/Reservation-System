@@ -9,7 +9,25 @@ use Tests\TestCase;
 class CompanyTest extends TestCase
 {
     use RefreshDatabase;
- 
+    
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->seed();
+    }
+
+    public function testSeeder()
+    {
+        $this->artisan('db:seed');
+
+        $this->assertDatabaseHas('roles', [
+            'name' => 'customer'
+        ]);
+
+        \DB::statement('ALTER TABLE roles AUTO_INCREMENT = 1');
+    }
+    
     public function test_admin_user_can_access_companies_index_page(): void
     {
         $user = User::factory()->admin()->create();
